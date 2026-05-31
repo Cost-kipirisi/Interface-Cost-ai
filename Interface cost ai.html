@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SYSTÈME COST AI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow-x:hidden;
+    background:
+    linear-gradient(rgba(0,0,0,0.80), rgba(0,0,0,0.88)),
+    url('https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=1600&auto=format&fit=crop');
+    background-size:cover;
+    background-position:center;
+}
+
+/* Animation fond */
+
+body::before{
+    content:'';
+    position:absolute;
+    width:700px;
+    height:700px;
+    background:radial-gradient(circle,#00ffb3 0%, transparent 70%);
+    top:-250px;
+    left:-250px;
+    opacity:0.15;
+    animation:moveGlow 8s infinite alternate;
+}
+
+body::after{
+    content:'';
+    position:absolute;
+    width:600px;
+    height:600px;
+    background:radial-gradient(circle,#0088ff 0%, transparent 70%);
+    bottom:-200px;
+    right:-200px;
+    opacity:0.15;
+    animation:moveGlow2 10s infinite alternate;
+}
+
+@keyframes moveGlow{
+    from{
+        transform:translate(0,0);
+    }
+    to{
+        transform:translate(80px,60px);
+    }
+}
+
+@keyframes moveGlow2{
+    from{
+        transform:translate(0,0);
+    }
+    to{
+        transform:translate(-60px,-40px);
+    }
+}
+
+/* Container principal */
+
+.main-box{
+    width:95%;
+    max-width:1000px;
+    background:rgba(15,15,15,0.88);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:30px;
+    padding:50px;
+    position:relative;
+    z-index:2;
+    box-shadow:0 0 50px rgba(0,0,0,0.5);
+    animation:fadeIn 1s ease;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(40px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* Titre */
+
+.logo{
+    text-align:center;
+    margin-bottom:50px;
+}
+
+.logo h1{
+    color:white;
+    font-size:52px;
+    font-weight:800;
+    letter-spacing:2px;
+}
+
+.logo span{
+    color:#00ffae;
+}
+
+.logo p{
+    color:#bbbbbb;
+    margin-top:10px;
+    font-size:16px;
+}
+
+/* Grille */
+
+.menu-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+/* Cartes */
+
+.card{
+    position:relative;
+    background:linear-gradient(145deg,#1c1c1c,#111111);
+    border-radius:25px;
+    padding:35px 25px;
+    cursor:pointer;
+    overflow:hidden;
+    transition:0.4s;
+    border:1px solid rgba(255,255,255,0.05);
+}
+
+.card:hover{
+    transform:translateY(-10px) scale(1.02);
+    box-shadow:0 15px 35px rgba(0,0,0,0.45);
+}
+
+.card::before{
+    content:'';
+    position:absolute;
+    width:200px;
+    height:200px;
+    border-radius:50%;
+    top:-80px;
+    right:-80px;
+    opacity:0.12;
+}
+
+/* Couleurs spécifiques */
+
+.chat::before{
+    background:#00ffae;
+}
+
+.score::before{
+    background:#ff4444;
+}
+
+.lesson::before{
+    background:#ffaa00;
+}
+
+.surprise::before{
+    background:#7d5fff;
+}
+
+/* Icônes */
+
+.icon{
+    font-size:55px;
+    margin-bottom:25px;
+}
+
+/* Texte */
+
+.card h2{
+    color:white;
+    font-size:23px;
+    margin-bottom:15px;
+}
+
+.card p{
+    color:#bdbdbd;
+    font-size:14px;
+    line-height:1.6;
+}
+
+/* Bouton */
+
+.open-btn{
+    margin-top:25px;
+    display:inline-block;
+    padding:12px 22px;
+    border-radius:12px;
+    text-decoration:none;
+    color:white;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.chat .open-btn{
+    background:#00b977;
+}
+
+.score .open-btn{
+    background:#ff3b3b;
+}
+
+.lesson .open-btn{
+    background:#ff9800;
+}
+
+.surprise .open-btn{
+    background:#7d5fff;
+}
+
+.open-btn:hover{
+    transform:scale(1.05);
+}
+
+/* Footer */
+
+.footer{
+    text-align:center;
+    margin-top:45px;
+    color:#888;
+    font-size:14px;
+}
+
+/* Responsive */
+
+@media(max-width:700px){
+
+    .main-box{
+        padding:30px 20px;
+    }
+
+    .logo h1{
+        font-size:36px;
+    }
+
+}
+
+</style>
+</head>
+<body>
+
+<div class="main-box">
+
+    <!-- TITRE -->
+
+    <div class="logo">
+
+        <h1>
+            SYSTÈME <span>COST AI</span>
+        </h1>
+
+        <p>
+            Interface principale intelligente
+        </p>
+
+    </div>
+
+    <!-- OPTIONS -->
+
+    <div class="menu-grid">
+
+        <!-- OPTION 1 -->
+
+        <div class="card chat">
+
+            <div class="icon">🤖</div>
+
+            <h2>
+                COST AI CONVERSATION
+            </h2>
+
+            <p>
+                Assistant conversationnel intelligent.
+                Connecte ton système de discussion ici.
+            </p>
+
+            <!-- AJOUTE LE LIEN ICI -->
+            <a href="Costai.html" class="open-btn">
+                OUVRIR
+            </a>
+
+        </div>
+
+        <!-- OPTION 2 -->
+
+        <div class="card score">
+
+            <div class="icon">⚽</div>
+
+            <h2>
+                PRÉDICTEUR DE SCORE
+            </h2>
+
+            <p>
+                Accède au système de prédiction
+                des matchs de football.
+            </p>
+
+            <!-- AJOUTE LE LIEN ICI -->
+            <a href="Prédicteur_score.html" class="open-btn">
+                OUVRIR
+            </a>
+
+        </div>
+
+        <!-- OPTION 3 -->
+
+        <div class="card lesson">
+
+            <div class="icon">📚</div>
+
+            <h2>
+                COURS ET LEÇONS
+            </h2>
+
+            <p>
+                Regroupe les cours,
+                explications et leçons éducatives.
+            </p>
+
+            <!-- AJOUTE LE LIEN ICI -->
+            <a href="Bd.html" class="open-btn">
+                OUVRIR
+            </a>
+
+        </div>
+
+        <!-- OPTION 4 -->
+
+        <div class="card surprise">
+
+            <div class="icon">🎁</div>
+
+            <h2>
+                SUJET SURPRISE
+            </h2>
+
+            <p>
+                Une option mystérieuse
+                avec contenu aléatoire ou spécial.
+            </p>
+
+            <!-- AJOUTE LE LIEN ICI -->
+            <a href="exerpage.html" class="open-btn">
+                OUVRIR
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+
+    <div class="footer">
+        © 2026 COST AI SYSTEM • Interface Principale
+    </div>
+
+</div>
+
+</body>
+</html>
