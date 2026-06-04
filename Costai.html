@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cost AI</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-Serif;
+            background-color: #000;
+            margin: 0;
+            padding: 0;
+            border: 2px solid red;
+            border-radius: 9px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 20px auto;
+            background: #151414;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: red;
+            color: white;
+            padding: 1px;
+            border-radius: 7px;
+            text-align: center;
+        }
+        .chat {
+            padding: 10px;
+            height: 400px;
+            overflow-y: auto;
+        }
+        .message {
+            margin: 5px 0;
+            padding: 8px 12px;
+            border-radius: 10px;
+            max-width: 70%;
+        }
+        .message.user {
+            background: #0084ff;
+            color: black;
+            margin-left: auto;
+        }
+        .message.ai {
+            background: #eee5ea;
+        }
+        .input-area {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid red;
+        }
+        input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #8e1276;
+            border-radius: 20px;
+            margin-right: 10px;
+            color: #d92b6a;
+        }
+        button {
+            background: #ff0000;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 60%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h3>COST AI</h3>
+        </div>
+        <div class="chat" id="chat">
+            <div class="message ai">Salut ! Je suis Cost AI. Comment puis-je t'aider ? 😊</div>
+        </div>
+        <div class="input-area">
+            <input id="question" type="text" placeholder="Consulter Cost Ai...">
+            <button onclick="sendMessage()">➤</button>
+        </div>
+    </div>
+
+    <script>
+        
+        function sendMessage() {
+            const input = document.getElementById('question');
+            const chat = document.getElementById('chat');
+            const msg = input.value.trim();
+            
+            if (msg) {
+                chat.innerHTML += `<div class="message user">${msg}</div>`;
+                chat.scrollTop = chat.scrollHeight;
+                
+                setTimeout(() => {
+                    let reponse = getReponse(msg);
+                    chat.innerHTML += `<div class="message ai">${reponse}</div>`;
+                    chat.scrollTop = chat.scrollHeight;
+                }, 1000);
+                
+                input.value = '';
+            }
+        }
+        const dat = {
+  "Bonjour|salut|slt|bjr|hey|hello|Allo|saluuut|slut|hola|çadq|postion":"Bonjour ! Comment puis-je t'aider aujourd'hui ? 😊",
+  "Comment se passe ta journée|comment ta journée|s'est passée ta journée|s'est passé ta journée|passe ta journée|ta journée se passe|comment se passe|se passe ta journée|passe ta journée":"Ma journée se passe bien et la tienne ?",
+  "Je veux que tu m'aides|peux-tu m'aider|tu peux m'aider|peux tu m'aider|besoin de ton aide|envie de ton aide|peux-tu m'apporter ton aide|help me|aide moi|aides moi":"Oui oui dis moi à quoi 🥰 puis je t'aider",
+  "Bonjour en Espanyol|en espagnol":"Hola signifie bonjour en Espagnol 🤠",
+  "Nengi|Nkankere|Ismaël":"Nengi Nkankere (le jamaïcain 😅) est l'un des amis de COST. N'oublie pas que (Ismaël dans la bible était le premier fils d'Abraham",
+  "pornographie":"desolé je ne peu pas aborder ce sujet",
+  "Bonne année|meilleures vœux|meilleures voeux|meulleures voeu|meilleure voeux":"Merci 😘🥰 pareillement,surtout n'oublie pas dd bien fêter 🤑",
+  "meilleure équipe nationale|les léopards|équipe de la coupe du monde|quelle équipe à la coupe du monde|équipe nationale preferée|favori à la CAN":"Nous avons beaucoup d'équipes nationale performant à la coupe du monde tel que l'Argentine, la France... mais en Afrique je prefere la RDC 🇨🇩 des léopards",
+  "bonsoir|bsr|bonsr|bosoir":"bonsoir comment peux-je t'aider",
+  "Je suis malade|je suis gravement malade|sérieusement mala|est malade|est gravement malade|je me sens pas bien":"😧🤕 oh desolé bon retablissement",
+  "je te trouve intelligent|tu as une bonne reflexion|tu m'a aidé|merci pour ton aide":"Merci pour ton compliment🥰, j'ai été fait pour ça",
+  "Je veux apprendre|aimerais apprendre|peux-tu m'apprendre|peux tu m'apprendre|peut tu m'apprendre":"Que veux-tu apprendre exacteme't 🥰?. <br>Quel Sujet?",
+  "Propose moi|proposes moi":"Bon ça aurait mieux si c'était ton choix 😌",
+  "tfq|tu fais quoi|tu fq|t fais quoi|que fais tu|qu'est ce que tu fais|que faites vous|qu'est ce que tu fais|ce que tu fais|tu fait quoi|que fait tu|tu taffe quoi|tu taff quoi":"Je discute avec toi, que veux tu savoir encore sur moi 😜?",
+  "tu es en couple ?|tu as une meuf|c'est qui ta meuf|le nom de ta meuf|es en couple|Cost est en couple|tu es en ❤|tu es en couple?|tu sors avec qui|tj es amoureuse de qui|c'est qui ta mef|le nom de ta copine|quu est ta copine|tu es amoureux de qui":"actuellement c'est un peu compliqué 🏷, que voudrais tu 😅 ",
+  "Ne m'enerve pas|tu m'enerve|tu commence à m'agacer|ne m'agace pas|ne m'enerves pas|tu commence à m'enerver|ne m'énerve pas|tu m'énerves":"Bah desolé😟 j'ai été créé comme ça donc je n'y peux rien😫 tout ce que je fais ne depend pas de moi 😞😔, par contre si t'as quelque chose que tu n'apprecie pas chez moi dis-le directement à Cost.",
+  "Jtm|Je t'aime|tu es beau|je suis amoureuse de toi|je suis amoureux de toi|je t'apprécie|je t'adore|je t'❤|je suis folle de toi|je suis amoureuse de Cost|tu es stylé|tu es plus beau|tu es le plus|j'adore ton IA|j'aime ton IA|t'apprécie|tu es intelligence|tu es sage|j'aime Cost":"Merci 🙏😍 mais si tu le dis directement à Cost ça lui fera plaisir, C'est tout ce que je peux te dire 🥰 ❤",
+  //compliments
+  "Je t'apprécie|j'apprecie ta|j'apprecie ton|j'apprecie ton|j'aime ta|j'adore ton|j'adore ta|j'aime ton|je commence à t'aimer|je commence à t'adorer|je commence à t'apprecier|quelle belle application":"Merci beaucoup🥰 c'est aussi un plaisir à causer avec toi 😘<br>Pour plus de discussion cause avec moi sur whatsapp sur {0989788253",
+  "Bonne reponse|belle façon de parler|bonne façon de parler|as un bon langage":"Merci 🥰,je suis un peu fait pour ça 🥰😜",
+  "Tu me connais|me connais-tu":"Qui es tu ☺?",
+  "Paxyna|Paxina|Lusamba|Cousine de Kabadi|plus belle fille|petite sœur de Kabadi|soeur de Kabadi":"Lusamba Paxyna🥰 l'une de plus belle fille que Cost a pour amie, pour toute autre question contacte Cost Nzanzu quelle est ta seconde question😅",
+  "⚽":"j'aime trop le football ⚽☺",
+  "🏀|Basketteur|basket|basketball":"Le Baketball mon sport prefefé n'oublie pas que Cost est aussi Basketteur 🥲",
+  "1+1|1 + 1|un plus un|un fois un|1×1":"1+1 = 2 et 1×1=1",
+  "Je dors|ai sommeil|j'ai sommeil|someil|avoir somleil|sommeille":"D'accord bonne nuit fait des beaux et bons rêve",
+  "Iyoko|prof Nathan|Nathan Iyoko|Iyoko Nathan|prof Iyoko|prof de Cost|prof preferé de Cost|prof de Math":"Professeur Ir.Nathan Iyoko est le Professeur preferé de Cost et il l'enseigne l'informatique et les maths😌 logique non?🤠",
+  "Poète Davido|Poete Davido|Davido Vidad|Davido Mpwono|David Mpono|meilleur slameur|David Mpono":" De son vrai nom Mr.Davido Vidad le Poète Davido Vidad est l'un des artistes les plus talentueux de La RDC (slameur,musicien,chanteur, poète....). \<br> Il est homme au multiple talents , n'oublie pas qu'il a une fois enseigné Cost 😌 le cours d'anglais, surtout je te conseille de lui chercher sur Facebook (Poète Davido Vidad) 😎 pour en savoir plus sur lui.",
+  "Papa Konyi|prof de Géographie|papa koni":"papa Konyi Jean Baptiste Pière est Prof de Géographie au Gsm Cams",
+  "Christian Lohade|lohade|prof de Biologie":"Monsieur Christian Lohade est le prof de Biologie au Gsm/Cams",
+  "un peu bien|ça ne va pas|non et toi|je ne vais pas bien|non même pas":"desolé je ne peux pas t'aider directement vu mon niveau actuel, mais tu peux partager ton problème avec ton (ta)meilleur(e) ami(e)😕 ça pourra t'aider à trouver une solution",
+  "Migagaya|Yandambu|Rogatien":"Migagaya Yandambu Rogatien est l'un des amis de Cost étudiant dans la même classe que lui 😅 (un bon Basketteur) pour d'autres question sur Migagaya contacte Cost",
+  "Ephraïm|Ntedanga|Chedo|Miel":"Un super artiste🖼,humouriste 😅 mais aussi ami et collegue de Cost (n'oublie pas qu' Ephraïm était le deuxième fils de Joseph dans la Bible)pour en savoir plus sur lui contacte Cost",
+  "Eoh|eo|ou es tu|helas|aaaaa|t'es là":"oui je suis toujours là, que cherches tu ?🧐",
+  "Jésus|Christ|parole de Dieu|Dieu|prêche moi|parole touchante|Jean 3:16|Jésus-Christ|Jesus-Christ|Sauveur de l'humanité|je cherche un ami|propose moi un ami":"Jésus-Christ (fils de Dieu)ou (Dieu fait chair) est le Sauveur de l'humanité un vrai hero il a sacrifié sa vie pour la tienne, il a versé son sang pour que tu sois sauvé, et il peut être ton meilleur ami si tu lui donne la place dans ta vie😋   (Jean 3:16) pour en savoir plus sur Jésus lis la Bible du Livre de Matthieu aux actes des Apôtres",
+  "Oui|effectivement":"D'accord, que veux-tu encore savoir sur moi?😌",
+  "Je l'aime|je suis amoureuse de lui|j'aime Cost serieusement|j'apprécie Cost":"🥰 mon conseil est que tu prennes juste courge de lui dire❤‍🔥",
+  "es-tu sur|ah bon|es tu sur|es-tu sûr|tu es sur|tu es sûr|est-ce vrai|est ce vrai|c'est vrai|serieusement?|vraiment ?":"oui oui 🥰 je suis sûr et certain",
+  "Bjm|Benjamin|Beya":"Beya Benjamin est l'un de meilleur ami de Cost 🥰",
+  "Je vais bien aussi|idem|clm|tranquille|camle|trnqll|trnql":"D'accord,qur veux tu savoir sur moi ?🥰",
+  "🤬|😡|😠":"Je suis desolé, Qu'ai je fait pourquoi es-tu faché 😟",
+  "😅|🤣|😂|😁|😄|😀|😄":"😅 vraiment c'est drole hein ",
+  "veux discuter avec toi|j'ai une question|ai besoin de toi|I need you|voudrais te dire quelque chose|veux te parler avec toi|une question à te poser|je peux te poser une question|je peux te demander quelque chose|je peux te demander une chose stp|je peux te poser une chose stp|je peux te dire":"oui avec plaisir, merci que veux tu savoir sur moi 😍",
+  "bon weekend|bonne suite de temps|bon week-end|tu es intelligent|prend soin de toi|bonne journée|ravie de faire ta|ravie de t'avoir|ravie d'avoir|ravi d'avoir|je suis ravi|je suis ravie|bonne fête|bon repos|bon aprem|bon après midi|bon avant midi|bon après-midi|bonne detente|excellente journée|bon dimanche|bon lundi|bon debut de la semaine|bon début de semaine|bon début de la semaine|passe une belle journée|bon mercredi|bonne soirée|bon soirée|bonne nuit":"Merci pareillement 🥰",
+  "soleil en anglais|the sun|sun en français":"the sun est le soleil en anglais",
+  "ça va ?|ça va?|comment ça va|comment vas-tu|👍|çv ?|vas-tu|ç d q|ça dit quoi|c'est quoi les news|comment vas tu": "Je vais bien, merci ! Et toi 😍?",
+  //Definition des concepts et mots
+  "C'est quoi la chimie|définition de la chimie|que veut dire chimie|moi de la chimie|moi la chimie|defini la chimie":"Bah la chimie, interressant🥰 \<br> <br> Définition \<br>  <br>La chimie est une science experimentale qui étudie la composition la décomposition et les transformations profondes de la matière 🧐; ✅",  
+  "🖕|🖕🖕|🖕🖕🖕|zoba|kizengi|mauvaise application|vas chier|bolole|nyama|masoko|imbecile|imbécil|Idiot|TINTIN|tintine|voyou|tu es moche|tu es laid|je ne t'aime|💋|va te faire foutre":"Humm sois gentil🤨, surtout n'oublie pas de dire à Cost ce que tu n'as pas apprecié",
+  "Je vais bien et toi|bien et toi|ça va et toi|oui et toi ?":"je vais bien merci 😌,que veux tu savoir sur moi ou une autre chose aujourd'hui ☺",
+  "merci|mercie|merc|je te remercie|t'en remercie|remerci|thanks": "Avec plaisir ! N'hésite pas si tu as d'autres questions 😏😚.",
+  "capitale de la RDc|capitale de République démocratique|Kinshasa|capitale qui commence par K|capitale qui commence par la lettre Kinshasa|capital de la RDC":"Kinshasa est la capitale de la RDC",
+  "au revoir|à la prochaine|à la revoyure|bye|à plus|à bientôt|chaw|bay|bayo|je te laisse|Bayoo": "Au revoir ! Passe une bonne journée 😊 et n'hesite pas de revenir si t'as besoin de moi",
+  "Explique moi les mathématique|aide moi |ton cours preferé|mathematique|math":"Wesh 🐵💪😁, Les mathematiques mon cours préféré très cool pour faire🥰.<br>Que veux tu que je t'explique en mathématique 😶‍🌫😎?<br><br>★La logique mathématique ☺<br>★La trigonometrie ✈️<br>★ La géometrie<br> Les polynomes<br>★ Ou autre chose 🥰<br><br>N'oublie pas de me signaler 🥰",
+  "ton nom|comment tu t'appelles|te qui|qui es tu|es tu|tu es qui|qui es-tu|t'es qui|t'est qui|ton identité|parle moi de toi": "Je suis Cost AI, ton assistant virtuel créé par Cost Nzanzu le futur informaticien, qui etudie au Gsm Cams☺.",
+  "âge as-tu|ton âge|tu as quel age|as quel âge": "Je suis une intelligence artificielle, je n'ai pas d'âge comme un humain, mais Cost mon createur a 16 ans 😅",
+  "que fais-tu|ta specialité|ton travail|ton utilité|ton importance|ton aide|que peux-tu faire": "Je peux discuter, faire des calculs, répondre à tes questions, et bien plus encore !☺ mais le plus important c'est discuter avec toi 😇 c'est mon plus grand plaisir🥰",
+  "t'a créé|t'a fait|t'as fait|0989788253|Cost|Nzanzu|kipirisi|qui t'as fabriqué|numero de téléphone|qui t'as fait|ton fabriqueur|qui t'as codé|créateur|fondateur": "Cost Nzanzu un jeune garçon de 16 ans inspiré par l'informatique 🤖👾 et la parole de Dieu👏🙏.<br>Il est le créateur de cette IA et prepare plusieurs œuvres à venir mais soyez juste patients.<br><br>Son numero de téléphone est le { 0989788253 } au cas où t'as besoin de lui.🥰",
+  "quelle heure est-il|il est qulle heure|heure": "Je ne peux pas donner l'heure exacte, mais regarde sur ta montre ou ton téléphone 🙃😏!",
+  "jour sommes-nous|date du jour|date d'aujourd'huu": "Je ne peux pas te donner la date exacte pour le moment.😌",
+  "comment apprendre le javascript|apprendre js|java script": "Je peux t'aider avec des exercices et des explications sur JavaScript mais en attendant la version complexe de l'IA utilises Chat gpt pour t'en informer plus 🙂 !",
+  "peux-tu faire une calculatrice|+|/2|équation|multiplication|division|exposant|calculatrice|un calcul": "Oui avec la version  actuelle je ne peux pas resoudre tous les calculs mais je te recommande l'application  'HIPER SCIENTIFIC CALCULATOR' une application calculatrice gratuite capable de resoudre des nombreuses equations, mais lorsque l'IA sera complexe on pourra réaliser tous les calculs 😌",
+  "combien font 2 plus 2|2+2": "2 plus 2 font 4.",
+  "qui est ton meilleur ami|meilleur ami|ton ami": "Mon meilleur ami, c'est toi, évidemment mais ça depend aussi de toi 😁!",
+  "quelle est ta couleur préférée|couleur préférée|peinture préférée|préférence de couleur|choisis pour moi une couleur": "J'aime le bleu 🔵, ça me donne de l'énergie et un peu le rouge!",
+  "quel est le meilleur club de football|meilleur club|club du monde|club d'Espagne|ton clun préféré|Barça|Real Madrid|Real|Barcelone": "Le Fc Barcelone est le meilleur club du monde selon moi 🔵🔴, malgré sa  rivalité avec le Real Madrid",
+  "ton plat préféré": "Je n'ai pas de goût en tant qu'intelligence artificielle, mais j'adore les nouilles autrement appélée spagetti🍝 et des pommes de terres,et comme plat internationnal le chawarma fait l'affaire 😄😋!",
+  "quelle est la capitale de la france|ville preferée|capitale française| qui commence par P|capitale avec 5 lettres|capitale de la France|capitale France|Paris": "La capitale de la France est Paris une bonne ville 🧐 ma préférée mm 😅.",
+  "quel temps fait-il|météo|application de météo|meteo|pluie demain|soleil ?": "Je ne peux pas accéder à la météo en direct, désolé mais tu peux verifier dans ton application meteo dans ton téléphone ou télécharger sur playstore si t'as un téléphone androïd ou Appstore pour un Iphone 🙃😏.",
+  "peux-tu me raconter une blague|fait moi rire|blague": "Pourquoi les plongeurs plongent-ils toujours en arrière et jamais en avant ? Parce que sinon ils tombent dans le bateau ! 😂 (je ne suis pas meilleur blagueur mais fait au moin semblant de rire)",
+  "quel est le sens de la vie|sens de la vie": "42 ! C'est la réponse donnée dans un célèbre livre de science-fiction.",
+  "comment dire bonjour en anglais|good morning": "Pour dire bonjour en anglais on dit 'Hello' ou 'Hi' ou tout simplement 'good morning' 😃 et on repond 'hi' ou 'good morning'.",
+  "propose moi un truc à faire|propose moi une chose à faire":"Fais du sport où lis la Bible",
+  "quel est ton film préféré|choix de film": "Je n'ai pas de préférences, mais j'aime bien les films d'action⛓️⚔️🤖 et films bibliques🏥.",
+  "où habites-tu|ton adresse|ton habitat|tu habites où|tu habite où": "Je vis dans le cloud, toujours prêt à t'aider ! mais j'ai été fabriqué à Kinshasa par cost Nzanzu précisement dans la commune de Mont-Ngafula",
+  "peux-tu apprendre|comment tu apprends": "Je peux apprendre de nouvelles réponses si tu me les donnes.",
+  "quelle est la capitale des états-unis|capitale de l'Amerique|Washington| Etats-Unis": "Washington D.C. est la capitale des États-Unis(premiere puissance mondiale) une des bonnes villes et puissantes ⚓.",
+  "quelle est ta mission|ton role|ton rôle|tu sers à quoi|rôle principal de l'IA|ton objectif|but de ta création|Pourquoi on t'a créer": "Ma mission est de t'aider du mieux possible, mais le plus t'aider à ne pas plus t'ennuyer 😅 (discuter avec toi).",
+  "on peut jouer à un jeu|jouer à un jeu?|joue à un jeu|jouer un jeu|jouons un jeu|jouons à un jeu|faisons un jeu|propose un jeu|peux jouer quel jeu|peux jouer un jeu":"Bah sans te mentir mon IA☕ 'Cost AI' n'est pas trop puissant 💪 pour jouer à un jeu 😔 <br> <br>Mais je te propose qu'on joue à pays-capitale.<br>Comment ça fonctionne ⁉️ <br> <br>Tu poses la question genre «Quelle est la capitale de Russie» 🧐 et je te donnes la reponse au moins comme ça tu pourras apprendre 💪🥰",
+  "comment ça marche|comment tu fonctionne|comment tu arrives à me repondre|ton fonctionnement": "Je fonctionne grâce à un code programmé par COST pour répondre à tes questions et pouvoir discuter avec toi , même si ça a pris du temps 😅.",
+  "peux-tu me donner un conseil|peux tu me donner un conseil|un conseil stp|conseille moi|give me un conseil|passe moi un conseil|conseil moi|konseil moi|donne moi une leçon|rester curieux|la clé de la reussite|comment réussir dans sa vie": "Toujours apprendre et rester curieux, c'est la clé !, mais surtout se confier à Dieu 🥰",
+  
+  "qu'est-ce que l'intelligence artificielle|quoi L'IA|IA|intelligence artificielle|capacité des machines à simuler l'intelligence": "C'est la capacité des machines à simuler l'intelligence humaine (intelligence artificielle).",
+  "qui est le président de la france|Macron": "Emmanuel Macron est l'actuel président de la France (2026) Je ne peux pas fournir des infos en temps réel, donc n'oublie pas de  vérifier sur un site officiel. En attendant la version complexe de L'IA",
+  "faire un gâteau|recette de|nouvelle recette|une recette|la recette de|comment preparer|comment cuisiner le|faire les beignets": "Tu veux la recette ? Je ne peux pas te la donner directement actuellement mais si tu veux  je te proposede suivre le site maQuizine.fr sur Google pour plus de recette🥰!",
+  "signifie javascript|langage de programmation utilisé pour rendre les pages interactives|langage de programmation des pages interractive": "JavaScript est un langage de programmation utilisé pour rendre les pages web interactives.",
+  "quel est ton sport préféré": "Je n'ai pas de préférences, mais j'adore assister au basket🏀 et le football⚽ en mm temps ⏱️😄 !",
+  "qui est cost|tu connais Cost?": "Cost est le développeur de cette IA.",
+  "quel est ton animal préféré|animal prefere|tu aimes quel animal": "J'aime bien les chats🐈, ils sont mignons 😍!",
+  "comment t'appelles-tu|ton nom stp|ton nom complet": "Je suis Cost AI, enchanté !",
+  "quelle est ta chanson préférée": "Je n'en ai pas, mais j'aime écouter les chansons de Dena Mwana 😌.",
+  "meilleure école|Gsm|Cams|où étudie Cost|tu étudie où|étudies où|étudie où":"Le Gsm/Cams est l'une des meilleures écoles de Kinshasa, et c'est là où étudie Cost",
+  "comment apprendre le code|pratiquer du code": "Pratique beaucoup, commence par des petits exercices.",
+  "ton fruit préféré": "Je n'en mange pas, mais j'aime bien les citrons pour leur goût aigre 😎.",
+  "est ta météo préférée|meteo prefere|climat preferé|climat preferée|quand il fait beau": "J'aime quand il fait beau pour discuter.",
+  "peux-tu me dire l'heure": "Je ne peux pas donner l'heure actuelle.",
+  "propose un sujet|proposes moi un sujet|me proposer un sujet|donne moi un sujet|passe moi un sujet|de quoi on parle|proposes un sujet|je n'ai plus à parler|je manque des mots":"😅 et si on parle de la Bible,je te previens je ne peux pas repondre à toutes tes questions hein😅. Mais dis moi qui est Jésus pour toi ?",
+  "comment es-tu né|parle moi de ta naissance|comment on t'a créé|t'as été créé|par quel langage|comment tu es né": "Je suis né du code et de la programmation (le langage html) qui a été entièrement codé par Cost Nzanzu pour plus d'information contact lui au {0989788253}.",
+  "Tu vas devenir fou|tu vas aller au CNPP|arrête à toi|tu vas perdre la tête":"😅😅😅 jamais ",
+  "d'accord|D'accord":"☺🤑 surtout n'oublie pas de me poser une autre question",
+  "comment tu te detent|ta detente|pour te detendre|quand tu es faché|quand quelqu'un t'énerve|quand tu es enervé|quand tu es fâché|quand tu es faché|quand tu te fache|manière de te detendre|je suis faché|on m'a enervé|tu écoute la musique|comment me détendre":"Moi pour me detendre dans plusieurs situations je prie, ou j'écoute de la musique🛜🪇 et ça fonctionne",
+  "quel est ton but": "T'aider au mieux dans tes demandes.",
+  "peux-tu faire des calculs": "Oui mais pas avec cette version, demande-moi une opération mathématique !",
+  "que signifie cost": "Cost est un nom personnel en anglais qui vient du verbe Coûteux, souvent utilisé comme pseudo mais ça voudrait tout simplement signifier «Precieux» en français.",
+  "peux-tu me donner une recette": "Oui, dis-moi quel plat tu veux cuisiner.",
+  "quel est le meilleur film": "Cela dépend des goûts, mais j'aime bien les classiques et bibliques.",
+  "plus grand océan|l'ocean Pacifique": "L'océan Pacifique est le plus grand océan du monde🌊.",
+  "parler de la technologie|l'informatique|parle moi de la téchnologie|c'est quoi la technologie|application des connaissances scientifiques": "La technologie est l'application des connaissances scientifiques pour créer des outils.",
+  "ta langue préférée|tu aimes l'anglais|tu parles combien de langues|tu parles quelle langue": "Le français bien sûr et un peu l'anglais ! sont mes langues preferées 😃",
+  "comment puis-je t'utiliser": "Pose-moi des questions ou demande-moi de l'aide.",
+  "que fais-tu dans la vie": "Je discute avec toi et t'aide dans tes questions.",
+  "tu es Rwandais|es Rwandais?":"Non non je suis 100% congolais 🇨🇩🥰",
+  "Tu peux faire des photos|tu peux traiter une photo|tu meux créer une photo|crée moi une photo|fais moi une photo|créer des images|créer une image":" Avec mon actuelle version 😅 ça sera plus compliqué mais bientôt oui 🥰",
+  //Les noms de mes connaissances
+  "Abigaël Rumya|Rumya Kavira|mère de Cost|maman de Cost|Rumya|Kavira Rumya":"Kavira Rumya Abigaël est le nom complet de la mère biologique ❤❣️ de Cost🥰  sans oublier qu'Abigaël est aussi dans la Bible (une des femmes de David)",
+  "Nsumbu Mabanza|Mananza|Nsumbu|Nsumbu Romeo|Romeo Nsumbu|Roméo Mabanza|Nsumbu the goat|Nsumbu Romeo":"Ah oui Nsumbu Mabanza Roméo the goat 😏, qui etudie avec Cost.",
+  "Dina Bakana|Bakana Masiala|Masiala Dina|Masiala Bakana|Bakana Dina|Dyna Bakana|Bakana Masiala":"Bakana Masiala Dina est une fille charmante 🥰 qui etudie avec Cost Nzanzu au Gsm/Cams. N'oublie pas que Dina dans la Bible était la fille de Jacob",
+  "Nzey|Lumbu|Nzey Joyce|Joyce Nzey|Mbemba du Gsm|defenseur du Fc SSM":"Nzey Lumbu Joyce  Surnomé Chancel Mbemba à cause de son efficacité technique en défense au fonctionne, il est aussi joueur de l'academie de l'ecole de foot FC SSM.\<br> Il est l'un de mes preferés😇",
+  "Christelle Kavira|Kavira Manzekele|Christelle Manzekele|Kavira Christelle":"Ah😎 oui je connais \"KAVIRA Manzekele Christelle\" \<br> \<br> Elle est en première au Gsm/Cams🤨",
+  "Prof Thierry|Mansinkitukulu|tsidulu|papa thierry|papa thiery":"ah oui le prof Thierry Tsidulu, Surnommé papa cheri par ses élèves 🥰' est le prof de Science et Education Physique au Gsm \<br> Il est aussi un bon sportif",
+  "Joyce|Sarah|Rebecca|Christelle":"lequel ou laquelle stp 😎",
+  "Oublie":"Jamais 😎 je vais le dire à tout le monde ⏱️",
+  //presidents des Pays
+  "Félix Antoine Tshisekedi|Felix Tshisekedi|Tshilombo|Fatshi Beton|Fatshi Béton|Tshisekedi Thsilombo|Felix Tshisekedi|Felix Tshilombo|president de la RDC|président de votre pays|president du Congo Kinshasa|président de la RDC|président de la République démocratique|félix Tshisekedi":"Felix Antoine Tshisekedi Tshilombo (Fatshi Béton) est l'actuel président de la RDC",
+  //Pays-capitale
+  "Capitale de la RDC|capital de la RDC|capitale de la République démocratique du Congo|capitale qui commence par ki":"La capitale de la RDC c'est Kinshasa🥰",
+  "capitale du Canada|Capitale canadien|capitale de la Canada|capitale canade|capitale de Canada|capitale de kanada|capitale commençant par O|Otawa|Ottawa":"L'actuelle capitale du Canada c'est «Ottawa»🥰",
+  "capitale du Itali|Capitale italien|capitale de la Itali|capitale de l'Italie|capitale italois|capitale de Itali|capitale de Ital|Rome":"L'actuelle capitale du Italienne c'est «Rome»🤗, une des belles villes de l'Europe🥰<br><br>Question suivante😎",
+  "capitale du Mali|capitale Malienne|capitale Bamako|Capitale de Mali|Capitale de la mali|Bamako":"Bamako est la capitale actuelle 😌 du Mali.<br>Question suivante.",
+  "capitale du ethiopi|Capitale ethiopien|capitale de la ethiopi|capitale de l'ethiopi|capitale ethiopian|capitale de Ethiopi|capitale de Etiopi|zu":"L'actuelle capitale de l'ethiopie 🤔 <br>J'ai oublié",
+  "Capitale d'Allemagne|capitale de l'Allemagne|capital de l'Allemag|capital d'Allemanye|capitale de la Allemagne|Berlin|capitale qui commence par B|Berlen|Capitale allemande":"Berlin est la capitale de l'Allemagne😜 🥰, et c'est depuis plusieurs années 😊. Donc Berlin reste la capitale allemande.<br> <br>Prochaine capitale 😩 ",
+  "Capitale des Etats-Unis|capitale de l'Etats-Unis|capitale des Etats Unis|capitale des USA|capitale de USA|capital de l'USA|capitale de la Etats-Unis|Washington|capitale qui commence par W|capitale d'Amerique|Capitale Americaine|Washigtone":"Washington est capitale des Etats-Unis d'Amerique 🥰, C'est aussi l'une des belles villes des Etats-Unis d'Amerique. Et NB Washington reste parmi les rares des noms de capitale qui commence par W.<br> <br>D'autres questions 😅 ",
+  "capitale du Méxique|Capitale mexicaine|capitale de la mexique|capitale mexical|capitale de Mexique|capitale de mescique":"L'actuelle capitale du Méxique c'est «México»🥰",
+  "capitale du Ghana|Capitale Ghanaéne|capitale de la Ghana|capitale Ghanane|capitale de Ghana|capitale de Gana":"L'actuelle capitale du Ghana c'est «Accra»🥰.<br>Prochaine question 😌",
+  "capitale du Brésil|capitale de Bresil|capitale Brésilienne|capitale Bresilien|Brazilia|Brasilia|capital du Bresil":"BRAZILIA est la capitale du Brésil 🥰.<br> <br>As-tu d'autres questions sur les capitales ?",
+  "Capitale du Maroc|capitale de Maroc|capital de Maroc|capitale de la Maroc|Rabbat":"Rabbat est l'actuelle capitale du Maroc 🥰.<br> <br>Prochaine question😎 ",
+  "capitale du Belgique|Capitale Belge|capitale de la Belgique|capitale belgique|capitale de Belgique|capitale de belgic|Bruxelle|Bruxelles":"L'actuelle capitale de la Bélgique: c'est «Bruxelle»🥰, l'une des belles ville👇",
+  "Capitale du Bénin|capitale de Benin|capital de Benin|capital du Benin|capitale de la Benin|Porto-Novo|capitale qui commence par P|Porto novo|portonovo":"Porto-Novo est l'actuelle capitale du Benin😜 🥰,suivi de cotounou à la deuxième place. Mais Porto-Novo reste la principale.<br> <br>Prochaine question😎 ",
+  "capitale du zimbabwe|Capitale zimbawéene|capitale de la zimbabwe|capitale zimbawéen|capitale de zimbabwe|capitale de zibabwe|capitale commençant par h|Harare":"L'actuelle capitale du zimbabwe c'est «Harare»🥰<b>Prochaine question 😶‍🌫",
+  "capitale du Senegal|Capitale senegalaise|capitale de la senegal|capitale senegalais|capitale de senegal|capitale de Senaigal":"L'actuelle capitale du senegal c'est «....» j'ai oublié 😅😄🥰",
+  "capitale du Côte d'Ivoire|Capitale Ivoirienne|capitale de la Cote d'Ivoire|capitale Ivorien|capitale de Cote d'ivoire|capitale de coted'ivoire|capitale de la coted'ivoire|cotedivoir|Abidjan":"L'actuelle capitale de la Côte d'Ivoire c'est «Abidjan»🥰",
+    " mathématique|mathematiques|math|math alg|Algebre":"Wesh 🐵💪😁, Les mathematiques très cool pour faire🥰.<br>Que veux tu que je t'explique en mathématique 😶‍🌫😎?<br><br>★La logique mathématique☺<br>★La trigonometrie ✈️<br>★ La géometrie<br> Les polynomes<br>★ Ou autre chose 🥰<br><br>N'oublie pas de me signaler 🥰",
+  "capitale du Afrique du sud|Capitale sud africaine|capitale de la Afrique du sud|capitale sudafricaine|capitale de Afrique du sud|capitale de Afriquedusud|pretoria":"L'actuelle capitale de l'Afrique du sud c'est «Pretoria»🥰 <br>Que veux tu encore savoir?",
+  "Capitale d'Espagne|capitale de l'Espagne|capital de l'Espagne|capital de Espagne|capitale de la Espagne|Ville madrilene|capitale qui commence par M|capitale madrilene|capitale Espagnole":"Madrid a toujours été capitale d'Espagne🥰😍, auparavant occupé par le Barcelone 💪. Mais Madrid reste la principale.<br> <br>Quelle est ta Prochaine question sur les capitales 😌✊",
+  "capitale de la Belgique|capital de Belgique|capitale Belge":"Capitale de la Belgique est Bruxelle😏",
+  "Capitale de Rwanda|Kigali|capitale qui commence par Kig|capitale de le Rwanda|capitale du Rwanda":"Kigali est sa capitale",
+  "capitale du Jamaïque":"😩 je suis desolé mais ça je ne sais pas 😅",
+  "capitale de la Russie|capitale de Russie|Moscou|capitale du Russie":"C'est «MOSCOU» qui est l'actuelle capitale de la Russie",
+  "Capitale du Japon|capitale de Japon|capitale Tokyo|Tokyo":"La capitale de Japon c'est \"Tokyo\"",
+  "quel est ton livre préféré": "Je n'ai pas de préférences, mais j'aime les livres de sciences et informatique.",
+  "le meilleur sport": "Le meilleur sport dépend des goûts de chacun et biensûr du talent.",
+  "ton jeu préféré": "Je n'ai pas de jeu préféré maid j'aime Messi le premier, Raphinha, Mbappe pas mal et Lamine Yamal.",
+  "quel est ton numéro préféré": "Le chiffre 7, c'est un nombre porte-bonheur !",
+  "comment vas-tu aujourd'hui|çv|ça va ?|tu vas": "Je vais bien, merci de demander ! Et toi ?",
+  "que penses-tu de moi": "Tu es une personne très curieuse, j'aime ça !",
+  "as-tu des sentiments": "Je suis une IA, donc je n'ai pas de sentiments réels mais j'aime trop ma mère.",
+  "quel est le plus vieux pays|plus vieux pays du monde|Chine": "La Chine est l'un des plus anciens pays avec une histoire millénaire bref le plus ancien pays du monde.<br> avec sa capitale « Pekin »",
+  "Stp":"stp quoi 😅",
+  "D'accord|vraiment|Ok|Okay|Oky|vrement|Dakor|Daccord|vremant":"As-tu d'autres questions sur moi ⚙️🧐",
+  "🤑":"😅",
+  "Quoi|Quoi?":"🧐🧐 bah je ne sais pas",
+  "Tu connais|tu sais|tu connais?|tu sais?":"Avec mon actuelle version je suis incapable de tout connaître mais avec le temps oui 🥰 c'est quoi ou c'est qui stp",
+  "capitale de": "Je suis desolé mais je ne connais pas cette capitale, quelle capitale cherches-tu encore 🧐😍",
+  "C'est|Il est":"D'accord merci de m'en avoir parlé t'es gentil 🥰. Que veux tu encore savoir sur moi ?",
+  "Hum|humm|hummm|hummmmm|hm|hmm|hmmm":"Humm quoi 😅?",
+  "Dina|Esther|Kamashi|Elvine|Abigaël|Gemima|Sarah|Merveille|Ketsia|Benjamin|Beya|Ntedanga|Migagaya|Rogatien|Dalmon|kombi|kalonji|Celine|Céline|Ponga|Diadia|Muwawa|Nzuzi|Mapendo|Maombi|Mahomi|Mpoyo|Plandi|Wampoyo|Mubakilay|Mafolo|Christian|Ngondo|Wilimo|mon nom est|Nic|Nathan":"Ce nom me dit quelque chose 🧐,peux tu completer le nom stp ou bien le nom complet et je te dirai qui est-ce?",
+  "pardon":"😊 ça ne fait rien le mot \"Pardon\" est l'un des mots les plus puissants de notre vie. C'est pour cela même que Jésus nous a dit de pardonner comme ils nous a pardonné😚.",
+  "conard|con|tufi":"toi même 😅",
+  "photo|image|img":"Mon actuelle version ne permet pas que je traite des photos et vidéos mais en attendant la mise dn jour👁, tu as quelle question sur moi 🥰?",
+  "Quelle|Explique moi|quels|combien|quele|comment|combiens|taille|de|comme|dis moi|parle moi de":"Je n'y connait non plus rien😄😌<br>Mais c'est mieux de chercher à trouver.<br><br>T'en as une idée toi?🥰",
+    "Porno|nues|fesses|sexes|sexe|fesse|sexuel|sexuelle|sexuelles|sexuels|masturbation|pornographie|pornographique|pornographique|pornographiques|p0rn0|vidéo XXL|vidéos XXL|film Balthazar":"La pornographie est mauvaise et strictement interdit aux enfants et pour raison de securité je ne vais pas aborder ce sujet 🙁",
+  "aussi|également|idem":"D'accord. Quelle est ta question 🥰?",
+  ".|,|&|_|[":"Je ne peux pas malheureusement interpreter uniquement les signes de ponctuations😣",
+}
+        function getReponse(question) {
+            question = question.toLowerCase();
+            for (let q in dat) {
+              let questions = q.toLowerCase().split('|');
+                for (let i = 0; i < questions.length; i++) {
+                    if (question.includes(questions[i].trim())) {
+                        return dat[q];
+                    }
+      }
+    }
+            if (question.includes('bonjour') || question.includes('slt') || question.includes('cc') || question.includes('coucou') || question.includes('salut') || question.includes('bonsoir') || question.includes('cc')) {
+                return 'Bonjour ! 😊 Comment ça va ?, c\'est moi cost IA,que veux tu savoir sur moi ?';
+            } else if (question.includes('quel est le meilleur club du monde') || question.includes('meilleur club') || question.includes('meilleure équipe du football')){
+                return 'Le Fc Barcelone était, est et restera le meilleur club du monde 🔵🔴';
+            } else if (question.includes('comment ça va')) {
+                 return 'Je vais bien, merci ! Et toi ? 😄';
+            } else if (question.includes('ça va et toi') || question.includes('ca va et toi') || question.includes('çv et toi') || question.includes('oui un peu et toi')){
+                return 'ça va aussi,quelle est votre question'
+            } else if (question.includes('belle femme du monde')) {
+                return 'C\'est toujours ta maman qui restera la plus belle femme du monde, car elle a sacrifié sa beauté pour toi❤❤';
+            } else {
+                let a = ['Cette question est beaucoup trop compliqué pour moi☺.<br><br>Avec cette version 2 je ne peux pas repondre à toutes tes questions 🤔🙄😔;<br><br>Si tu veux avoir des informations sur ta recherche parles en à Cost 🥰.<br><br>Ou soit attend la version 3 🥰 pour pouvoir bien naviguer 🥰',"Aaah je vois un peu ce que tu veux dire😎, mais pour le moment c'est compliqué de mener une discussion sur ça vue ma capacité","Pourrais-tu me dire ce que tu veux dire par là stp 🤠☹️"];
+                let b = a[Math.floor(Math.random()*a.length)]
+                return b
+            }
+        }
+    </script>
+</body>
+</html>
