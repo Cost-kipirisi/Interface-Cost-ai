@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BIBLE AI</title>
+  <style>
+      body {
+          font-family: 'Segoe UI', sans-serif;
+          background-color: black;
+          margin: 0;
+          padding: 0;
+      }
+      .container {
+          max-width: 390px;
+          margin: 20px auto;
+          background: black;
+          border-radius: 9px;
+          box-shadow: 0 0 10px 
+            rgba(0,0,0,0.1);
+          overflow: hidden;
+      }
+      .header {
+          background: red;
+          color: yellow;
+          padding: 8px;
+          text-align: center;
+      }
+      .chat {
+          padding: 10px;
+          color: white;
+          height: 400px;
+          overflow-y: auto;
+      }
+      .message {
+          margin: 7px 0;
+          padding: 7px 12px;
+          border-radius: 15px;
+          max-width: 60%;
+      }
+      .message.user {
+          background: red;
+          color: white;
+          margin-left: auto;
+      }
+      .message.ai {
+          background: blue;
+          color: white;
+      }
+      .input-area {
+          display: flex;
+          padding: 15px;
+          border-top: 1px solid #016;
+      }
+      input {
+          flex: 1;
+          padding: 9px;
+          border: 3px solid #ddd;
+          border-radius: 30px;
+          margin-right: 20px;
+      }
+      button {
+          background: red;
+          color: black;
+          border: none;
+          padding: 10px 10px;
+          border-radius: 40%;
+          cursor: pointer;
+      }
+  </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h3>BIBLE IA</h3>
+        </div>
+        <div class="chat" id="chat">
+            <div class="message ai">Salut je suis l'IA biblique créée par Cost Nzanzu, à quelle question voulez-vous que je reponde ❤‍🔥?</div>
+        </div>
+        <div class="input-area">
+            <input id="question" type="text" placeholder="Ecrivez votre question">
+            <button onclick="sendMessage()"> ️▶️</button>
+        </div>
+    </div>
+    <script>
+  const data = {
+    "salut|bonjour|slt|slut|bjr|bon jour|bonzour|shalom|que la paix soit avec toi":"bonjour comment, ça va ?😊",
+    "çv et toi|ça va et toi|çv et t|çv et toi|ça va et t|ça va bien et toi|çv b et t|çv bien et toi":"ça va aussi quelle est ta question?",
+    "Qui est Jésus|qui était Jesus|est qui Jésus": "Jésus est le fils de Dieu, sauveur de l'humanité.",
+    "dit la Bible sur l'amour|bible sur l'amour|bible concernant l'amour|amour biblique|l'amour dans la bible|verset qui parle de l'amour": "Aime ton prochain comme toi-même (Marc 12:31).",
+    "jesus pour toi": "Jésus est le fils de Dieu, sauveur de l'humanité🥰.",
+    "la Bible sur l'amour": "Aime ton prochain comme toi-même (Marc 12:31)😍.",
+    "premier livre de la Bible|premier livre biblique|premier livre pentateque|premier livre de Moïse|livre qui parle de la création|où se trouve l'histoire d'Adam et Eve": "Le première livre de la Bible c'est Genèse, qui fut écrit par Moïse.",
+    "Où est né Jésus|où est né jesus|où s'est fait la naissance de jesus|jesus est né où?": "Jésus est né à Bethléem, avez vous une autre question?",
+    "oui|effectivement|carrement|une autre question|une question":"laquelle 🥰?",
+    "signifie Amen|veut dire amen|terme amen|signifucation de amen": "'Amen' signifie 'vraiment' ou 'ainsi soit-il'.",
+    "écrit Genèse|a écrit le premier livre de la bible": "La Genèse est attribuée à Moïse.",
+    "est le nom de Dieu dans la Bible|comment appelle-t'on Dieu dans la Bible|le nom de Dieu": "Le nom de Dieu est YHWH (Jehovah ou Yahweh).",
+    "Que dit le 10e commandement ?": "Tu ne convoiteras pas la maison de ton prochain.",
+    "Qui a trahi Jésus ?": "Jésus a été trahi par Judas Iscariot.",
+    "Qui est Marie ?": "Marie est la mère de Jésus.",
+    "Quel est le livre le plus court de la Bible ?": "Le livre d'Obadia.",
+    "Qui a écrit les Psaumes ?": "Les Psaumes sont attribués à David et d'autres auteurs.",
+    "Quel est le mont où Jésus a prié ?": "Le mont des Oliviers.",
+    "Qui est Noé ?": "Noé est le héros du déluge dans la Genèse.",
+    "Que dit Jean 3:16 ?": "Car Dieu a tant aimé le monde qu'il a donné son Fils unique.",
+    "Qui est l'apôtre Paul ?": "Paul est un apôtre de Jésus-Christ, ancien persécuteur des chrétiens.",
+    "Quel est le nom du premier homme ?": "Le premier homme s'appelle Adam.",
+    "Que signifie 'Bible' ?": "'Bible' vient du grec 'biblia', signifiant 'livres'.",
+    "Qui a vu la gloire de Dieu ?": "Moïse a vu la gloire de Dieu (Exode 33:18).",
+    "Quel est le jour de la résurrection de Jésus ?": "Jésus est ressuscité le dimanche.",
+    "Qui est David ?": "David est un roi d'Israël, ancêtre de Jésus.",
+    "dit le Notre Père|comment prier": "Voici comment vous devez prier 'Notre Père qui es aux cieux, que ton nom soit sanctifié...(Matthieu 6 : 1-...)",
+    "construit l'arche de Noé": "Noé a construit l'arche.",
+    "le symbole du christianisme": "La croix est le symbole du christianisme.",
+    "Qui est Abraham ?": "Abraham est le père des croyants (Genèse 12).#@&(){}",
+    "Que dit Proverbes 3:5 ?": "Confie-toi en YHWH de tout ton cœur.",
+    "prophète de l'Apocalypse ?": "Jean est l'auteur de l'Apocalypse.",
+    "désert où Jésus a jeûné|Jésus a jeûné où": "Le désert de Judée.",
+    "première chrétienne à Rome|Lydia": "Lydia (Actes 16:14).",
+    "Quel est le livre de la loi ?": "Le livre de la loi est le Deutéronome.",
+    "Qui a donné les 10 commandements ?": "Dieu a donné les 10 commandements à Moïse.",
+    "Qui est Isaac ?": "Isaac est le fils d'Abraham et Sara.",
+    "Que signifie 'Jehovah' ?": "Jehovah signifie 'Il est' (Exode 3:14).",
+    "Qui a combattu Goliath ?": "David a combattu Goliath.",
+    "Quel est le nom du jardin où Jésus a été arrêté ?": "Le jardin de Gethsémané.",
+    "Qui est le roi d'Israël avant Jésus ?": "Hérode le Grand.",
+    "Que dit 1 Corinthiens 13:13 ?": "Maintenant donc ces trois choses demeurent : la foi, l'espérance, l'amour.",
+    "Qui est Judas Iscariot ?": "Judas Iscariot est celui qui a trahi Jésus.",
+    "Quel est le nom du fleuve où Jésus a été baptisé ?": "Le Jourdain.",
+    "Qui est le père de David ?": "Jesse est le père de David.",
+    "Que signifie 'Evangile' ?": "'Evangile' signifie 'bonne nouvelle'.",
+    "Qui a écrit l'Evangile de Jean ?": "L'apôtre Jean a écrit l'Evangile de Jean.",
+    "Quel est le nom de la montagne où Dieu a donné la loi ?": "Le mont Sinaï.",
+    "Qui est Esther ?": "Esther est une reine qui a sauvé les Juifs.",
+    "Que dit Psaume 23:1 ?": "YHWH est mon berger, je ne manque de rien.",
+    "Qui est le successeur de Judas ?": "Matthias a remplacé Judas (Actes 1:26).",
+    "Quel est le nom du temple de Jérusalem ?": "Le temple de Salomon.",
+    "Qui est le roi de Babylone ?": "Nebuchodonosor était roi de Babylone.",
+    "Que dit Matthieu 5:44 ?": "Aimez vos ennemis et priez pour ceux qui vous persécutent.",
+    "Qui est Salomon ?": "Salomon est le fils de David, connu pour sa sagesse.",
+    "Quel est le nom de la femme de Moïse ?": "La femme de Moïse s'appelle Zippora.",
+    "Qui a détruit le temple de Jérusalem ?": "Les Babyloniens (Nebuchodonosor).",
+    "Que dit Romains 3:23 ?": "Tous ont péché et sont privés de la gloire de Dieu.",
+    "Qui est le prophète qui a oint David ?": "Samuel a oint David.",
+    "Quel est le nom du bateau de Noé ?": "L'arche de Noé.",
+    "Qui est Ruth ?": "Ruth est l'ancêtre de David.",
+    "Que dit Jacques 1:17 ?": "Tout don excellent vient du Père des lumières.",
+    "Qui a traduit la Bible en latin ?": "Jérôme (Vulgate).",
+    "Quel est le nom du disciple aimé de Jésus ?": "Jean est le disciple aimé.",
+    "Qui est le roi qui a voulu tuer Jésus bébé ?": "Hérode le Grand.",
+    "Que dit 2 Timothée 3:16 ?": "Toute Écriture est inspirée de Dieu.",
+    "Qui est le premier martyr chrétien ?": "Étienne est le premier martyr (Actes 7).",
+    "Quel est le nom du désert où Jésus a été tenté ?": "Le désert de Judée.",
+    "Qui est le père d'Abraham ?": "Térah est le père d'Abraham.",
+    "Que dit Galates 5:22 ?": "Le fruit de l'Esprit est amour, joie, paix...",
+    "Qui a écrit l'Evangile de Luc ?": "Luc, compagnon de Paul.",
+    "Quel est le nom de la ville où Jésus a grandi ?": "Nazareth.",
+    "Qui est le prophète qui a prédit la naissance de Jésus ?": "Esaïe (Esaïe 7:14).",
+    "Que dit Psaume 119:105 ?": "Ta parole est une lampe à mes pieds.",
+    "Qui est le roi qui a reconstruit le temple ?": "Ezra et Néhémie ont aidé à reconstruire.",
+    "Quel est le nom de la mer où Jésus a marché ?": "La mer de Galilée.",
+    "Qui est la femme de Lot ?": "La femme de Lot est devenue une statue de sel.",
+    "Que dit Matthieu 22:37 ?": "Aime le Seigneur de tout ton cœur.",
+    "Qui est le prophète qui a été avalé par un poisson ?": "Jonas.",
+    "Quel est le nom du pays où Jésus a été emmené enfant ?": "L'Egypte.",
+    "Qui est le premier apôtre ?": "Pierre (Simon Pierre).",
+    "Que dit Hébreux 11:1 ?": "La foi est la substance des choses qu'on espère.",
+    "Qui a écrit l'Epître aux Hébreux ?": "Auteur inconnu (traditionnellement Paul).",
+    "Quel est le nom de la montagne de la transfiguration ?": "Le mont Thabor.",
+    "Qui est le roi d'Israël qui a succédé à David ?": "Salomon.",
+    "Que dit Apocalypse 3:20 ?": "Je me tiens à la porte et je frappe.",
+    "Qui est le prophète qui a prédit la venue de Jean-Baptiste ?": "Esaïe (Esaïe 40:3).",
+    "Quel est le nom de la ville où Paul a été converti ?": "Damas.",
+    "Qui est la mère de Samuel ?": "Hannah (1 Samuel 1).",
+    "Que dit Proverbes 22":"instruit l'enfant"
+    
+  };
+
+  function sendMessage() {
+    const input = document.getElementById('question');
+    const chat = document.getElementById('chat');
+    const msg = input.value.trim();
+    if (msg) {
+      chat.innerHTML += `<div class="message user">${msg}</div>`;
+      chat.scrollTop = chat.scrollHeight;
+      setTimeout(() => {
+        let reponse = getReponse(msg);
+        chat.innerHTML += `<div class="message ai">${reponse}</div>`;
+        chat.scrollTop = chat.scrollHeight;
+      }, 500);
+      input.value = '';
+    }
+  }
+     function getReponse(question) {
+            question = question.toLowerCase();
+            for (let q in data) {
+                let questions = q.toLowerCase().split('|');
+                for (let i = 0; i < questions.length; i++) {
+                    if (question.includes(questions[i].trim())) {
+                        return data[q];
+                    }
+                }
+ 
+  }
+  
+              if (question.includes('merci') || question.includes('mrc')) {
+                  return 'Je t\'en prie as-tu d\'autres questions du genre?';
+                
+              } else {
+                  return 'Bientôt l\'IA sera complet et pourra reponde à toutes vos questions comme celles-là,avez vous d\'autres questions à part celle-là?';
+              }
+  
+      }
+      
+</script>
+
+</body>
+</html>
