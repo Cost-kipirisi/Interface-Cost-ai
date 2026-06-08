@@ -1,0 +1,73 @@
+<!DOCTYPE html><html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Cost Page</title>
+  <style>
+    body { font-family: Arial; margin: 0; background: #eeeeee; }
+    .container { padding: 20px; }
+    .hidden { display: none; }
+    input, button { padding: 10px; margin: 5px 0; width: 90%; }
+    button { cursor: pointer; }
+    .card { background: red; padding: 15px; 
+      margin: 10px 0; 
+      border-radius: 10px;
+      color:red;}
+  </style>
+</head>
+<body><!-- PAGE CONNEXION --><div id="loginPage" class="container">
+  <h2>Connexion</h2>
+  <input type="text" placeholder="Numéro de téléphone">
+  <input type="password" placeholder="Mot de passe">
+  <input type="text" placeholder="Bio">
+  <button onclick="login()">Se connecter</button>
+</div><!-- PAGE PRINCIPALE --><div id="homePage" class="container hidden">
+  <h1>Cost Page</h1>
+  <p>Bienvenue ! Choisissez un thème :</p>  <div class="card">
+    <button onclick="showTheme('math')">Maths</button>
+  </div>
+  <div class="card">
+    <button onclick="showTheme('science')">Apprendre la science</button>
+  </div>
+  <div class="card">
+    <button onclick="showTheme('francais')">Français (grammaire)</button>
+  </div>
+  <div class="card">
+    <button onclick="showTheme('english')">English</button>
+  </div>
+</div><!-- PAGE THEME --><div id="themePage" class="container hidden">
+  <h2 id="themeTitle"></h2>
+  <p id="themeContent"></p>
+  <button onclick="goBack()">Retour</button>
+</div><script>
+  function login() {
+    document.getElementById('loginPage').classList.add('hidden');
+    document.getElementById('homePage').classList.remove('hidden');
+  }
+
+  function showTheme(theme) {
+    const titles = {
+      math: "Maths",
+      science: "Science",
+      francais: "Français",
+      english: "English"
+    };
+
+    const contents = {
+      math: "Les mathématiques permettent de résoudre des problèmes et comprendre les nombres.",
+      science: "La science explique le monde à travers des expériences et des observations.",
+      francais: "La grammaire française aide à bien écrire et parler.",
+      english: "English helps you communicate with people around the world."
+    };
+    document.getElementById('homePage').classList.add('hidden');
+    document.getElementById('themePage').classList.remove('hidden');
+
+    document.getElementById('themeTitle').innerText = titles[theme];
+    document.getElementById('themeContent').innerText = contents[theme];
+  }
+
+  function goBack() {
+    document.getElementById('themePage').classList.add('hidden');
+    document.getElementById('homePage').classList.remove('hidden');
+  }
+</script></body>
+</html>
