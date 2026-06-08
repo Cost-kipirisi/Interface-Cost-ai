@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Predicteur Score Cost AI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:
+    linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
+    url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1600&auto=format&fit=crop');
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.container{
+    width:100%;
+    max-width:500px;
+    background:rgba(20,20,20,0.92);
+    border:1px solid rgba(255,255,255,0.08);
+    backdrop-filter:blur(10px);
+    border-radius:25px;
+    padding:35px;
+    box-shadow:0 0 40px rgba(0,0,0,0.5);
+    animation:fadeIn 1s ease;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.title{
+    text-align:center;
+    font-size:30px;
+    font-weight:700;
+    color:white;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#b9b9b9;
+    margin-bottom:35px;
+}
+
+.input-group{
+    margin-bottom:22px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:8px;
+    color:#4cff74;
+    font-size:14px;
+}
+
+.input-group input{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:14px;
+    background:#2b2b2b;
+    color:white;
+    outline:none;
+    font-size:15px;
+    transition:0.3s;
+}
+
+.input-group input:focus{
+    border:2px solid #00ff88;
+    transform:scale(1.02);
+}
+
+.buttons{
+    display:flex;
+    gap:15px;
+    margin-top:25px;
+}
+
+button{
+    flex:1;
+    padding:15px;
+    border:none;
+    border-radius:14px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.predict-btn{
+    background:linear-gradient(45deg,#00c853,#00ff95);
+    color:white;
+}
+
+.quit-btn{
+    background:linear-gradient(45deg,#ff1744,#ff5252);
+    color:white;
+}
+
+.stats-btn{
+    margin-top:15px;
+    width:100%;
+    background:linear-gradient(45deg,#ff9800,#ffb74d);
+    color:white;
+    display:none;
+}
+
+button:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 20px rgba(0,0,0,0.3);
+}
+
+.result{
+    margin-top:35px;
+    background:#171717;
+    border-radius:20px;
+    padding:25px;
+    text-align:center;
+    display:none;
+    animation:fadeIn 0.5s ease;
+}
+
+.teams{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.team{
+    font-size:22px;
+    font-weight:700;
+}
+
+.home{
+    color:#ff5252;
+}
+
+.away{
+    color:#ffd740;
+}
+
+.score{
+    font-size:40px;
+    color:#00b0ff;
+    font-weight:700;
+}
+
+.stats-box{
+    margin-top:20px;
+    display:none;
+    background:#101010;
+    padding:20px;
+    border-radius:15px;
+    color:white;
+}
+
+.stat{
+    margin:10px 0;
+    display:flex;
+    justify-content:space-between;
+    border-bottom:1px solid #333;
+    padding-bottom:8px;
+}
+
+.footer{
+    text-align:center;
+    margin-top:25px;
+    color:#777;
+    font-size:13px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="title">
+        ⚽ COST AI SCORE
+    </div>
+
+    <div class="subtitle">
+        Predire le score avec Cost Ai
+    </div>
+
+    <div class="input-group">
+        <label>Équipe à domicile</label>
+        <input type="text" id="homeTeam" placeholder="Ex: Barcelone">
+    </div>
+
+    <div class="input-group">
+        <label>Équipe adverse</label>
+        <input type="text" id="awayTeam" placeholder="Ex: Real Madrid">
+    </div>
+
+    <div class="buttons">
+        <button class="predict-btn" onclick="predictScore()">
+            PRÉDIRE
+        </button>
+
+        <button class="quit-btn" onclick="resetApp()">
+            ACTUALISER
+        </button>
+    </div>
+
+    <button class="stats-btn" id="statsButton" onclick="showStats()">
+        STATISTIQUES
+    </button>
+
+    <div class="result" id="resultBox">
+
+        <div class="teams">
+
+            <div class="team home" id="homeName">
+                BARCELONE
+            </div>
+
+            <div class="score" id="scoreText">
+                3 - 1
+            </div>
+
+            <div class="team away" id="awayName">
+                REAL MADRID
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="stats-box" id="statsBox">
+
+        <h2 style="margin-bottom:20px;text-align:center;">
+            📊 Statistiques du Match
+        </h2>
+
+        <div class="stat">
+            <span>Possession</span>
+            <span id="possession"></span>
+        </div>
+
+        <div class="stat">
+            <span>Tirs cadrés</span>
+            <span id="shots"></span>
+        </div>
+
+        <div class="stat">
+            <span>Corners</span>
+            <span id="corners"></span>
+        </div>
+
+        <div class="stat">
+            <span>Fautes</span>
+            <span id="fouls"></span>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        Produit par Cost AI ⚡
+    </div>
+
+</div>
+
+<script>
+
+function randomChoice(arr){
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function predictScore(){
+
+    let homeTeam = document.getElementById("homeTeam").value.trim();
+    let awayTeam = document.getElementById("awayTeam").value.trim();
+
+    if(homeTeam === "" || awayTeam === ""){
+        alert("Veuillez remplir les deux équipes !");
+        return;
+    }
+
+    let scores = [0,0,1,1,2,2,3,3,4];
+    let plus = [0,1];
+
+    let awayScore = randomChoice(scores);
+    let homeScore = randomChoice(scores) + randomChoice(plus);
+
+    let check = homeTeam.toLowerCase();
+
+    if(
+        check === "barcelone" ||
+        check === "barca" ||
+        check === "barcelona"
+    ){
+        homeScore += randomChoice(plus);
+    }
+
+    document.getElementById("homeName").innerText =
+        homeTeam.toUpperCase();
+
+    document.getElementById("awayName").innerText =
+        awayTeam.toUpperCase();
+
+    document.getElementById("scoreText").innerText =
+        `${homeScore} - ${awayScore}`;
+
+    document.getElementById("resultBox").style.display = "block";
+
+    document.getElementById("statsButton").style.display = "block";
+
+    generateStats();
+}
+
+function generateStats(){
+
+    document.getElementById("possession").innerText =
+        `${Math.floor(Math.random()*40)+30}% - ${Math.floor(Math.random()*40)+30}%`;
+
+    document.getElementById("shots").innerText =
+        `${Math.floor(Math.random()*15)} - ${Math.floor(Math.random()*15)}`;
+
+    document.getElementById("corners").innerText =
+        `${Math.floor(Math.random()*10)} - ${Math.floor(Math.random()*10)}`;
+
+    document.getElementById("fouls").innerText =
+        `${Math.floor(Math.random()*20)} - ${Math.floor(Math.random()*20)}`;
+}
+
+function showStats(){
+
+    let box = document.getElementById("statsBox");
+
+    if(box.style.display === "block"){
+        box.style.display = "none";
+    }else{
+        box.style.display = "block";
+    }
+}
+
+function resetApp(){
+
+    document.getElementById("homeTeam").value = "";
+    document.getElementById("awayTeam").value = "";
+
+    document.getElementById("resultBox").style.display = "none";
+    document.getElementById("statsBox").style.display = "none";
+    document.getElementById("statsButton").style.display = "none";
+}
+
+</script>
+
+</body>
+</html>
