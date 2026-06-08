@@ -1,0 +1,449 @@
+<!DOCTYPE html><html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIBLE AI ULTRA</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet"><style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:
+    linear-gradient(135deg,#000000,#120000,#001133);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    overflow:hidden;
+}
+
+.container{
+    width:100%;
+    max-width:430px;
+    height:95vh;
+    background:rgba(10,10,10,0.95);
+    border:2px solid rgba(255,0,0,0.4);
+    border-radius:25px;
+    overflow:hidden;
+    box-shadow:
+    0 0 30px rgba(255,0,0,0.3),
+    0 0 60px rgba(0,0,255,0.2);
+    backdrop-filter:blur(10px);
+    position:relative;
+}
+
+.container::before{
+    content:'';
+    position:absolute;
+    width:200px;
+    height:200px;
+    background:red;
+    border-radius:50%;
+    top:-80px;
+    right:-80px;
+    opacity:0.2;
+    filter:blur(50px);
+}
+
+.container::after{
+    content:'';
+    position:absolute;
+    width:200px;
+    height:200px;
+    background:blue;
+    border-radius:50%;
+    bottom:-80px;
+    left:-80px;
+    opacity:0.2;
+    filter:blur(50px);
+}
+
+.header{
+    background:linear-gradient(90deg,#ff0000,#0011ff);
+    padding:18px;
+    text-align:center;
+    position:relative;
+    z-index:2;
+}
+
+.header h1{
+    color:white;
+    font-size:24px;
+    letter-spacing:2px;
+}
+
+.header p{
+    color:#ddd;
+    margin-top:5px;
+    font-size:12px;
+}
+
+.chat{
+    height:73vh;
+    overflow-y:auto;
+    padding:15px;
+    scroll-behavior:smooth;
+    position:relative;
+    z-index:2;
+}
+
+.chat::-webkit-scrollbar{
+    width:5px;
+}
+
+.chat::-webkit-scrollbar-thumb{
+    background:red;
+    border-radius:20px;
+}
+
+.message{
+    max-width:80%;
+    padding:12px 15px;
+    margin:12px 0;
+    border-radius:18px;
+    animation:fade .4s ease;
+    line-height:1.5;
+    word-wrap:break-word;
+}
+
+@keyframes fade{
+    from{
+        transform:translateY(10px);
+        opacity:0;
+    }
+    to{
+        transform:translateY(0);
+        opacity:1;
+    }
+}
+
+.user{
+    background:linear-gradient(135deg,#ff0000,#770000);
+    color:white;
+    margin-left:auto;
+    border-bottom-right-radius:5px;
+}
+
+.ai{
+    background:linear-gradient(135deg,#003cff,#001244);
+    color:white;
+    border-bottom-left-radius:5px;
+}
+
+.input-area{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    display:flex;
+    padding:15px;
+    gap:10px;
+    background:rgba(0,0,0,0.9);
+    border-top:1px solid rgba(255,255,255,0.1);
+    z-index:2;
+}
+
+.input-area input{
+    flex:1;
+    padding:15px;
+    border:none;
+    outline:none;
+    border-radius:50px;
+    background:#111;
+    color:white;
+    font-size:15px;
+    border:2px solid rgba(255,255,255,0.1);
+}
+
+.input-area input:focus{
+    border:2px solid red;
+    box-shadow:0 0 15px rgba(255,0,0,0.4);
+}
+
+.input-area button{
+    width:55px;
+    border:none;
+    border-radius:50%;
+    background:linear-gradient(135deg,red,blue);
+    color:white;
+    font-size:20px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.input-area button:hover{
+    transform:scale(1.1);
+}
+
+.power{
+    text-align:center;
+    color:#999;
+    font-size:11px;
+    margin-top:5px;
+}
+
+.typing{
+    color:#aaa;
+    font-size:13px;
+    margin-top:5px;
+}
+
+.glow{
+    color:#fff;
+    text-shadow:
+    0 0 5px red,
+    0 0 10px red,
+    0 0 20px blue;
+}
+
+</style></head><body><div class="container"><div class="header">
+    <h1 class="glow">✝ BIBLE AI ULTRA ✝</h1>
+    <p>IA Biblique créée par Cost Nzanzu</p>
+</div><div class="chat" id="chat"><div class="message ai">
+🔥 Shalom ! Je suis BIBLE AI ULTRA.<br><br>
+Pose-moi des questions sur :
+<ul>
+<li>Jésus</li>
+<li>La Bible</li>
+<li>Les prophètes</li>
+<li>Les miracles</li>
+<li>Les versets</li>
+<li>Les prières</li>
+<li>La foi</li>
+<li>L'amour</li>
+</ul>
+📖 Que puis-je faire pour toi ?
+</div></div><div class="input-area">
+    <input type="text" id="question" placeholder="Pose ta question biblique...">
+    <button onclick="sendMessage()">➤</button>
+</div></div><script>
+
+const randomResponses = [
+
+"📖 Intéressante question. La Bible nous enseigne à rechercher la sagesse.",
+"🔥 Continue à poser des questions bibliques.",
+"✝ Dieu t'aime énormément.",
+"📜 Veux-tu un verset biblique sur ce sujet ?",
+"🕊 La paix du Seigneur soit avec toi.",
+"📖 La Bible contient beaucoup de réponses spirituelles.",
+"🙏 Continue à chercher Dieu avec sincérité.",
+"✨ Jésus-Christ est le chemin, la vérité et la vie.",
+"📚 La connaissance biblique est une lumière.",
+"❤ Que Dieu te bénisse abondamment."
+
+];
+
+const data = {
+
+"bonjour|salut|shalom|yo|bjr":"🕊 Bonjour et bienvenue dans BIBLE AI ULTRA ✝",
+
+"qui est jésus|jesus":"✝ Jésus-Christ est le Fils de Dieu et le Sauveur du monde.",
+
+"qui a créé le monde":"📖 Dieu a créé les cieux et la terre (Genèse 1:1).",
+
+"premier homme":"👨 Le premier homme créé par Dieu est Adam.",
+
+"première femme":"👩 La première femme créée par Dieu est Ève.",
+
+"qui a construit l'arche":"🚢 Noé a construit l'arche.",
+
+"qui a trahi jesus":"💰 Judas Iscariot a trahi Jésus.",
+
+"où est né jesus":"⭐ Jésus est né à Bethléem.",
+
+"qui est david":"👑 David était roi d'Israël.",
+
+"qui est moise":"📜 Moïse a conduit Israël hors d'Égypte.",
+
+"plus grand commandement":"❤ Aime Dieu de tout ton cœur.",
+
+"jean 3:16":"📖 Car Dieu a tant aimé le monde qu'il a donné son Fils unique.",
+
+"psaume 23":"🕊 L'Éternel est mon berger : je ne manquerai de rien.",
+
+"qui est marie":"👩 Marie est la mère de Jésus.",
+
+"qui est paul":"📜 Paul est un grand apôtre du christianisme.",
+
+"que signifie amen":"🙏 Amen signifie : Ainsi soit-il.",
+
+"qui est satan":"⚠ Satan est l'ennemi spirituel dans la Bible.",
+
+"résurrection":"✝ Jésus est ressuscité le troisième jour.",
+
+"croix":"✝ La croix symbolise le sacrifice de Jésus.",
+
+"qui est abraham":"🌟 Abraham est le père des croyants.",
+
+"qui est isaac":"👦 Isaac est le fils d'Abraham.",
+
+"qui est jacob":"📖 Jacob est le père des 12 tribus d'Israël.",
+
+"qui est joseph":"👑 Joseph a été vendu par ses frères puis est devenu gouverneur d'Égypte.",
+
+"qui est esther":"👑 Esther est une reine courageuse dans la Bible.",
+
+"qui est ruth":"🌾 Ruth est connue pour sa fidélité.",
+
+"qui est salomon":"👑 Salomon est célèbre pour sa sagesse.",
+
+"qui est pierre":"🪨 Pierre est un disciple de Jésus.",
+
+"qui est jean":"📖 Jean est l'auteur de l'Apocalypse.",
+
+"qui est luc":"📚 Luc a écrit l'Évangile de Luc.",
+
+"qui est matthieu":"📖 Matthieu était un disciple de Jésus.",
+
+"qui est noé":"🚢 Noé a survécu au déluge.",
+
+"qui est daniel":"🦁 Daniel a été jeté dans la fosse aux lions.",
+
+"qui est jonas":"🐋 Jonas a été avalé par un grand poisson.",
+
+"qui est samuel":"📜 Samuel était prophète.",
+
+"qui est elie":"🔥 Élie est monté au ciel dans un char de feu.",
+
+"qui est elisee":"✨ Élisée a succédé au prophète Élie.",
+
+"qui est job":"🙏 Job est connu pour sa patience.",
+
+"qui est josué":"⚔ Josué a conduit Israël après Moïse.",
+
+"qui est gedeon":"⚔ Gédéon a vaincu les Madianites.",
+
+"qui est timothée":"📖 Timothée était compagnon de Paul.",
+
+"qui est tite":"📜 Tite était un disciple de Paul.",
+
+"qui est barnabas":"🕊 Barnabas accompagnait Paul.",
+
+"notre pere":"🙏 Notre Père qui es aux cieux...",
+
+"bible":"📚 La Bible est la Parole de Dieu.",
+
+"ancien testament":"📖 L'Ancien Testament contient les écrits avant Jésus.",
+
+"nouveau testament":"✝ Le Nouveau Testament parle de Jésus et des apôtres.",
+
+"foi":"🔥 La foi est une ferme assurance des choses qu'on espère.",
+
+"amour":"❤ Dieu est amour.",
+
+"paix":"🕊 Jésus donne la paix véritable.",
+
+"péché":"⚠ Tous ont péché et sont privés de la gloire de Dieu.",
+
+"paradis":"🌟 Le paradis est promis aux fidèles.",
+
+"enfer":"⚠ L'enfer symbolise la séparation d'avec Dieu.",
+
+"ange":"👼 Les anges sont des messagers de Dieu.",
+
+"saint esprit":"🔥 Le Saint-Esprit est le consolateur.",
+
+"miracle":"✨ Jésus a accompli beaucoup de miracles.",
+
+"eau en vin":"🍷 Jésus a changé l'eau en vin à Cana.",
+
+"lazare":"⚡ Jésus a ressuscité Lazare.",
+
+"pain":"🍞 Jésus a multiplié les pains.",
+
+"marché sur l'eau":"🌊 Jésus a marché sur les eaux.",
+
+"tempête":"⛈ Jésus a calmé la tempête.",
+
+"malade":"🙏 Jésus guérissait les malades.",
+
+"aveugle":"👁 Jésus a rendu la vue aux aveugles.",
+
+"merci":"❤ Avec joie. Que Dieu te bénisse.",
+
+"ça va":"😊 Oui ça va très bien. Et toi ?"
+
+};
+
+for(let i=0;i<1000;i++){
+
+data["question biblique "+i] =
+"📖 Réponse biblique automatique numéro "+i+
+". Dieu est fidèle et sa parole demeure éternellement.";
+
+}
+
+function sendMessage(){
+
+const input = document.getElementById("question");
+const chat = document.getElementById("chat");
+
+let msg = input.value.trim();
+
+if(msg === "") return;
+
+chat.innerHTML += `
+<div class="message user">${msg}</div>
+`;
+
+chat.scrollTop = chat.scrollHeight;
+
+input.value = "";
+
+setTimeout(()=>{
+
+let response = getResponse(msg);
+
+chat.innerHTML += `
+<div class="message ai">${response}</div>
+`;
+
+chat.scrollTop = chat.scrollHeight;
+
+},700);
+
+}
+
+function getResponse(question){
+
+question = question.toLowerCase();
+
+for(let key in data){
+
+let mots = key.split("|");
+
+for(let mot of mots){
+
+if(question.includes(mot.trim())){
+
+return data[key];
+
+}
+
+}
+
+}
+
+return randomResponses[
+Math.floor(Math.random()*randomResponses.length)
+];
+
+}
+
+document.getElementById("question")
+.addEventListener("keypress",function(e){
+
+if(e.key === "Enter"){
+
+sendMessage();
+
+}
+
+});
+
+</script></body>
+</html>
